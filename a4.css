@@ -1,0 +1,76 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.card{
+    border: lightgray 3px solid;
+    /*100% made it go way off screen but 99.5% lined it up perfectly?*/
+    width: 99.5%;  
+    margin: 15px;
+    margin-left: 0;
+}
+h4{
+    background-color: lightgray;
+    margin: 0;
+    padding: 10px;
+}
+#Score{
+    background-color: lightgreen;
+    text-align: center;
+    font-size: 25pt;
+    padding: 15px;
+}
+.qBlock{
+    display: grid;
+    grid-template-columns: repeat(1 1fr);
+    margin:0;
+    padding: 10px;
+}
+button{
+    font-size: larger;
+    width: 150px;
+    height: 50px;
+    margin: 15px;
+}
+.tabs{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin: 50px auto;
+    padding: 25px;
+}
+input.radTab[type="radio"]{
+    display: none;
+}
+.tabs label {
+    padding: 15px;
+    margin-right: 3px;
+}
+.tabs .tab{
+    width: 100%;
+    order: 1;
+    min-height: 300;
+}
+.radTab + label{
+    border: black solid 2px;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
+.radTab + label:hover{
+    background-color: darkblue;
+    color: white;
+    cursor: pointer;
+}
+.hidetab{
+    display: none;
+}
+table, th, td{
+    border: 1px black solid;
+    border-collapse: collapse;
+    padding: 0.5em;
+    min-width: 95%;
+    margin: 2.5%;
+}
+.highlight{
+    color: red;
+}

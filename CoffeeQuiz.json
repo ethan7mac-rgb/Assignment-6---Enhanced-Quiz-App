@@ -1,0 +1,35 @@
+{
+"title": "Coffee Quiz",
+    "questions": [
+        {
+            "questionText": "What is the best Light Roast, Medium Roast or Dark Roast (This isnt a subjective question at all)?",
+            "choices": ["Light Roast", "Medium Roast", "Dark Roast"],
+            "answer": 0
+        },
+        {
+            "questionText": "What is the best: Drip Coffee, Espresso, French Press?",
+            "choices": ["Drip Coffee", "Espresso", "French Press"],
+            "answer": 1
+        },
+        {
+            "questionText": "How do you properly make an Espresso?",
+            "choices": ["Boil water and pour it over ground cofee", "Grind coffee extra fine put it into a puck and use a special machine to push water at extra fast speed through the puck", "Boil water drink it and then eat the coffee beans"],
+            "answer": 1
+        },
+        {
+            "questionText": "Which of these countries dont make coffee?",
+            "choices": ["Ethiopia", "Brazil", "Antarctica", "Colombia"],
+            "answer": 2
+        },
+        {
+            "questionText": "Which of these arent espresso drinks?",
+            "choices": ["Sprite", "Americano", "Latte", "Cafe Cubano"],
+            "answer": 0
+        },
+        {
+            "questionText": "Which country consumes the most coffee per person out of these?",
+            "choices": ["Finland", "Brazil", "Italy", "Canada", "The Holy Roman Empire"],
+            "answer": 0
+        }
+    ]
+}
