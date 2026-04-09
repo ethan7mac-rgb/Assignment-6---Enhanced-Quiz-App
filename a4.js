@@ -1,26 +1,33 @@
 //Ajax call to desired JSON that is sent into build site
+//Scope issue here fix later
 window.onload = function(){
     console.log("link test");
-    let url = "CoffeeQuiz.json";
+    let url = "MathQuiz.json";
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-        buildSite(xhr.responseText)
+        JsonParse(xhr.responseText)
     }
     };
     xhr.open("GET", url, true);
     xhr.send();
+    this.document.querySelector("#btnLogin").addEventListener("click", BuildQuiz)
 }
 //Global variable for storing the quiz JSON in
 let QUIZ = [];
-//the build site which effectively replaces window onload since everything we are doing in this is after we parse the JSON
-function buildSite(text){
+function JsonParse(text){
     QUIZ = JSON.parse(text);
     console.log("Data Parsed");
+}
+function BuildSite(){
+    
+}
+//Made this build quiz to be called after the build site
+function BuildQuiz(){
     let main = document.querySelector("#main");
     let cards = buildCards();
     //sets up our initial html
-    main.innerHTML = "<h1>" + QUIZ.title + "</h1>";
+    main.innerHTML = '<div id="header"><h1> '+QUIZ.title+ '</h1><label id="fullCboQuiz">Quizzes:<select id="cboQuiz"><option>Math Quiz</option><option>Canadiana Quiz</option><option>World Geography Quiz</option></select></label></div>';
     main.innerHTML += '<div class="tabs">' + cards + '</div>';
     main.innerHTML += '<button id="btnSubmit">Submit</button>';
     main.innerHTML += '<div id="results"></div>';

@@ -29,7 +29,7 @@ button{
     font-size: larger;
     width: 150px;
     height: 50px;
-    margin: 15px;
+    margin: 10px;
 }
 .tabs{
     display: flex;
@@ -55,6 +55,8 @@ input.radTab[type="radio"]{
     margin: 0;
     flex: 1;
     text-align: center;
+    min-width: 100px;
+    max-width: 100px;
 }
 .radTab + label:hover{
     background-color: darkblue;
@@ -73,4 +75,53 @@ table, th, td{
 }
 .highlight{
     color: red;
+}
+#header{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+#fullCboQuiz{
+    margin-top: 25px;
+    width: 45%;
+    margin-right: 0;
+    align-items: flex-end;
+}
+h1{
+    width: 100%;
+    margin: 10px;
+}
+.login{
+    margin: 10px;
+    width: 100%;
+    gap: 15px;
+    
+}
+#login{
+    margin-top: 25px;
+    width: 85%;
+}
+#btnLogin{
+    background-color: rgb(39, 149, 218);
+    color: white;
+    border: 0;
+}
+#btnLogin:hover{
+    background-color: blue;
+    cursor: pointer;
+}
+.constants{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+#user{
+    margin: 10px;
+    width: 150px;
+    height: auto;
+    background-color: rgb(243, 243, 96);
+    color: rgb(197, 86, 86);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
