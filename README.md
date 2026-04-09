@@ -2,9 +2,9 @@
 
 TODO
 
-Dropdown loaded with the JSONS (I might make this programatically change for fun lmao)
+Dropdown(done)
 
-Login screen made with JS (Just store the initial html in a temp html variable then make a login html and replace the <body> with it)(Ethan is doing this rn)
+Login screen made with JS (Done)
 
 Store the quiz locally
 
