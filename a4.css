@@ -63,7 +63,7 @@ input.radTab[type="radio"]{
     color: white;
     cursor: pointer;
 }
-.hidetab{
+.hidden{
     display: none;
 }
 table, th, td{
