@@ -1,0 +1,40 @@
+{
+    "title": "D&D Quiz",
+    "questions": [
+        {
+            "questionText": "What does D&D stand for?",
+            "choices": ["driving and departing", "decorating and designing", "dungeons and dragons", "demons and devils"],
+            "answer": 2
+        },
+        {
+            "questionText": "Whats the higest level a player can reach in D&D?",
+            "choices": ["10", "15", "18", "20"],
+            "answer": 3
+        },
+        {
+            "questionText": "Which one of these classes is NOT a real class in D&D",
+            "choices": ["bard", "chef", "barbarian", "fighter", "monk"],
+            "answer": 1
+        },
+        {
+            "questionText": " True or False, does a player character have access to a main action, bonus action and reaction per turn?:",
+            "choices": ["True", "False"],
+            "answer": 0
+        },
+        {
+            "questionText": "What year was D&D 5th Edition released?",
+            "choices": ["2009", "2014", "2020", "2026"],
+            "answer": 1
+        },
+        {
+            "questionText": "What does AC stand for?",
+            "choices": ["Ability Cards","Anger Control", "Ability Capture", "Armor Class"],
+            "answer": 3
+        },
+        {
+            "questionText": "If your health drops to 0, what happens?",
+            "choices": ["You die", "You go down and have to roll to get back up", "Nothing"],
+            "answer": 1
+        }
+    ]
+}
