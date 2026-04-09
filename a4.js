@@ -19,6 +19,7 @@ function BuildButtons(){
     main.innerHTML += '<button id="btnView">View Attempts</button></div>';
     document.querySelector("#btnTakeQuiz").addEventListener("click", PickQuiz);
     document.querySelector("#btnView").addEventListener("click", ViewQuiz);
+    document.querySelector("#btnView").addEventListener("click", ViewAttempts);
     document.querySelector("#loginHtml").classList.add("hidden");
     PickQuiz();
 }
@@ -184,4 +185,27 @@ function AddQuizAtmpt(score, userAnswer){
     quizAttempts.push(attempt);
     localStorage.setItem("quizAttempts", JSON.stringify(quizAttempts));
 }
-//test????
+function ViewAttempts(){
+    let main = document.querySelector("#main");
+    let stored = localStorage.getItem("quizAttempts");
+
+    if(stored === null){
+        quizAttempts = [];
+    }
+    else{
+        quizAttempts = JSON.parse(stored);
+    }
+    let html = "";
+    html += "<h1>Quiz Attempts</h1>";
+    html += "<table>";
+    html += "<tr><th>User</th><th>Quiz</th><th>Timestamp</th></tr>";
+    for(let i = 0; i < quizAttempts.length; i++){
+        html += "<tr>";
+        html += "<td>" + quizAttempts[i].userName + "</td>";
+        html += "<td>" + quizAttempts[i].quiz.title + "</td>";
+        html += "<td>" + quizAttempts[i].timestamp + "</td>";
+        html += "</tr>";
+    }
+    html += "</table>";
+    main.innerHTML += '<button id="btnView">View Attempts</button></div>'; 
+}
