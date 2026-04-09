@@ -154,3 +154,24 @@ function Score(){
         results.innerHTML = html;
     }
 }
+function localStorage(userName, score, questions){
+    let date = Date.now();
+    let attempt = {
+        user: userName,
+        quiz: QUIZ.title,
+        score: score,
+        total: questions.length,
+        date: date
+    };
+
+    let allAttempts = JSON.parse(localStorage.getItem("quizAttempts"));
+
+    if(allAttempts === null){
+        allAttempts = [];
+    }
+
+    allAttempts.push(attempt);
+
+    localStorage.setItem("quizAttempts", JSON.stringify(allAttempts));
+}
+//test????
