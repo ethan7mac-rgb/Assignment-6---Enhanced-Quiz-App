@@ -1,8 +1,37 @@
 //Ajax call to desired JSON that is sent into build site
 //Scope issue here fix later
 window.onload = function(){
-    console.log("link test");
-    let url = "MathQuiz.json";
+    this.document.querySelector("#btnLogin").addEventListener("click", BuildButtons)
+}
+//Global variable for storing the quiz JSON in
+let QUIZ = [];
+function JsonParse(text){
+    QUIZ = JSON.parse(text);
+    console.log("Data Parsed");
+    BuildQuiz();
+}
+function BuildButtons(){
+    let main = document.querySelector("#main");
+    main.innerHTML = '<div class="TakeOrView"><button id="btnTakeQuiz">Take Quiz</button>';
+    main.innerHTML += '<button id="btnView">View Attempts</button></div>';
+    document.querySelector("#btnTakeQuiz").addEventListener("click", PickQuiz);
+    document.querySelector("#btnView").addEventListener("click", ViewQuiz)
+    PickQuiz();
+}
+function PickQuiz(){
+    let main = document.querySelector("#main");
+    main.innerHTML += '<div class="PickQuiz"><label id="fullCboQuiz">Quizzes:<select id="cboQuiz"><option>MathQuiz</option><option>CanadianaQuiz</option><option>WorldGeographyQuiz</option></select></label>';
+    main.innerHTML += '<button id="btnBeginQuiz">Begin Quiz</button></div>';
+    document.querySelector("#btnBeginQuiz").addEventListener("click", GetQuiz);
+}
+function ViewQuiz(){
+    let main = document.querySelector("#main");
+    main.innerHTML+='';
+}
+function GetQuiz(){
+    let selQuiz = document.querySelector("#cboQuiz").value + ".json";
+    console.log(selQuiz);
+    let url = selQuiz;
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
@@ -11,23 +40,13 @@ window.onload = function(){
     };
     xhr.open("GET", url, true);
     xhr.send();
-    this.document.querySelector("#btnLogin").addEventListener("click", BuildQuiz)
 }
-//Global variable for storing the quiz JSON in
-let QUIZ = [];
-function JsonParse(text){
-    QUIZ = JSON.parse(text);
-    console.log("Data Parsed");
-}
-function BuildSite(){
-    
-}
-//Made this build quiz to be called after the build site
+//Call after we confirm our quiz
 function BuildQuiz(){
     let main = document.querySelector("#main");
     let cards = buildCards();
     //sets up our initial html
-    main.innerHTML = '<div id="header"><h1> '+QUIZ.title+ '</h1><label id="fullCboQuiz">Quizzes:<select id="cboQuiz"><option>Math Quiz</option><option>Canadiana Quiz</option><option>World Geography Quiz</option></select></label></div>';
+    main.innerHTML = '<div id="header"><h1> '+QUIZ.title+ '</h1>';
     main.innerHTML += '<div class="tabs">' + cards + '</div>';
     main.innerHTML += '<button id="btnSubmit">Submit</button>';
     main.innerHTML += '<div id="results"></div>';
@@ -60,8 +79,6 @@ function buildCards(){
 }
 //registers all our buttons
 function buttonRegister(){
-    let main = document.querySelector("#main");
-    console.log("Log Worked", main.innerHTML)
     let tabs = document.querySelectorAll(".radTab");
     for(let i = 0; i < tabs.length; i++){
         let tab = tabs[i];
@@ -137,3 +154,24 @@ function Score(){
         results.innerHTML = html;
     }
 }
+function localStorage(userName, score, questions){
+    let date = Date.now();
+    let attempt = {
+        user: userName,
+        quiz: QUIZ.title,
+        score: score,
+        total: questions.length,
+        date: date
+    };
+
+    let allAttempts = JSON.parse(localStorage.getItem("quizAttempts"));
+
+    if(allAttempts === null){
+        allAttempts = [];
+    }
+
+    allAttempts.push(attempt);
+
+    localStorage.setItem("quizAttempts", JSON.stringify(allAttempts));
+}
+    
