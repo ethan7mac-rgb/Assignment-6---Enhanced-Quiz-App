@@ -1,21 +1,25 @@
 //Ajax call to desired JSON that is sent into build site
-//Scope issue here fix later
 window.onload = function(){
-    this.document.querySelector("#btnLogin").addEventListener("click", BuildButtons)
+    this.document.querySelector("#btnLogin").addEventListener("click", BuildButtons);
 }
-//Global variable for storing the quiz JSON in
+//Global variables
 let QUIZ = [];
+let quizAttempts = [];
+let user = "";
 function JsonParse(text){
     QUIZ = JSON.parse(text);
     console.log("Data Parsed");
     BuildQuiz();
 }
 function BuildButtons(){
+    user = document.querySelector("#login").value;
+    document.querySelector("#user").innerHTML = user;
     let main = document.querySelector("#main");
-    main.innerHTML = '<div class="TakeOrView"><button id="btnTakeQuiz">Take Quiz</button>';
+    main.innerHTML += '<div class="TakeOrView"><button id="btnTakeQuiz">Take Quiz</button>';
     main.innerHTML += '<button id="btnView">View Attempts</button></div>';
     document.querySelector("#btnTakeQuiz").addEventListener("click", PickQuiz);
-    document.querySelector("#btnView").addEventListener("click", ViewQuiz)
+    document.querySelector("#btnView").addEventListener("click", ViewQuiz);
+    document.querySelector("#loginHtml").classList.add("hidden");
     PickQuiz();
 }
 function PickQuiz(){
@@ -53,7 +57,7 @@ function BuildQuiz(){
     //hides all the tab contents
     let allTabs = document.querySelectorAll(".tab");
     for(let i = 0; i < allTabs.length; i++){
-        allTabs[i].classList.add("hidetab");
+        allTabs[i].classList.add("hidden");
     }
     //registers the buttons if this was done in window onload then it causes issues with not being able to pull from the JS created html
     buttonRegister();
@@ -91,23 +95,36 @@ function buttonRegister(){
 function showTab(){
     let tabs = document.querySelectorAll(".tab");
     for(let i = 0; i < tabs.length; i++){
-        tabs[i].classList.add("hidetab");
+        tabs[i].classList.add("hidden");
     }
     let radBtns = document.querySelectorAll(".radTab");
     for(let i = 0; i < radBtns.length; i++){
         if(radBtns[i].checked){
-            tabs[i].classList.remove("hidetab");
+            tabs[i].classList.remove("hidden");
             break;
         }
     }
 }
 //handles all the html which falls in the results div
 function Score(){
+    let userAnswer = [];
+    let allQblock = document.querySelectorAll(".qBlock");
+    console.log(allQblock);
+    for(let i = 0; i < allQblock.length; i++){
+        let allInput = allQblock[i].querySelectorAll("input");
+        for(let i = 0; i < allInput.length; i++){
+            if(allInput[i].checked){
+                userAnswer.push(Number([i]))
+            }
+        }
+    }
+
     let questions = QUIZ.questions;
     let score = 0;
     console.log(questions[0]);
     let table = ""
     console.log(document.querySelectorAll('input:checked'));
+    GetUserAnswers();
     //makes sure you answer all questions
     if(document.querySelectorAll('input:checked').length < questions.length)
         alert("Please answer all questions!");
@@ -133,13 +150,12 @@ function Score(){
             }
             else
                 table+='<tr class="highlight">';
+
             table+='<td>Question '+ [i+1] +'</td>';
             table+='<td>'+ question.questionText +'</td>';
             table+='<td>'+answer+'</td>';
             table+='<td>'+userAnswerText+'</td>';
             table+='<td>'+correct+'</td>';
-            
-
             table+='</tr>';
         }
         //creates the html to go in results
@@ -152,26 +168,20 @@ function Score(){
 
         let results = document.querySelector("#results");
         results.innerHTML = html;
+        AddQuizAtmpt(score, userAnswer);
     }
 }
-function localStorage(userName, score, questions){
-    let date = Date.now();
+function AddQuizAtmpt(score, userAnswer){
     let attempt = {
-        user: userName,
-        quiz: QUIZ.title,
+        userName: user,
+        quiz: QUIZ,
+        timestamp: new Date().toUTCString(),
+        userAnswers: userAnswer,
         score: score,
-        total: questions.length,
-        date: date
-    };
-
-    let allAttempts = JSON.parse(localStorage.getItem("quizAttempts"));
-
-    if(allAttempts === null){
-        allAttempts = [];
+        numQuestions: QUIZ.questions.length
     }
-
-    allAttempts.push(attempt);
-
-    localStorage.setItem("quizAttempts", JSON.stringify(allAttempts));
+    console.log(attempt);
+    quizAttempts.push(attempt);
+    localStorage.setItem("quizAttempts", JSON.stringify(quizAttempts));
 }
 //test????
