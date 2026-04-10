@@ -6,6 +6,6 @@ Dropdown(done)
 
 Login screen made with JS (Done)
 
-Store the quiz locally
+Store the quiz locally(done
 
-Display previous quizzes
+Display previous quizzes(half done)
