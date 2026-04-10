@@ -1,6 +1,11 @@
 //Ajax call to desired JSON that is sent into build site
 window.onload = function(){
-    this.document.querySelector("#btnLogin").addEventListener("click", BuildButtons);
+    this.document.querySelector("#btnLogin").addEventListener("click", Login);
+    document.querySelector("#btnTakeQuiz").addEventListener("click", QuizClick);
+    document.querySelector("#btnView").addEventListener("click", ViewClick);
+    document.querySelector("#btnBeginQuiz").addEventListener("click", GetQuiz);
+    this.document.querySelector("#btnLoadQuiz").addEventListener("click", BuildAttemptTable);
+    this.document.querySelector("#showDetails").addEventListener("click", ShowDetails);
 }
 //Global variables
 let QUIZ = [];
@@ -11,27 +16,32 @@ function JsonParse(text){
     console.log("Data Parsed");
     BuildQuiz();
 }
-function BuildButtons(){
+function Login(){
     user = document.querySelector("#login").value;
+    if(user === ""){
+        alert("Please enter a username");
+        return;
+    }
     document.querySelector("#user").innerHTML = user;
-    let main = document.querySelector("#main");
-    main.innerHTML += '<div class="TakeOrView"><button id="btnTakeQuiz">Take Quiz</button>';
-    main.innerHTML += '<button id="btnView">View Attempts</button></div>';
-    document.querySelector("#btnTakeQuiz").addEventListener("click", PickQuiz);
-    document.querySelector("#btnView").addEventListener("click", ViewQuiz);
-    document.querySelector("#btnView").addEventListener("click", ViewAttempts);
     document.querySelector("#loginHtml").classList.add("hidden");
-    PickQuiz();
+
+    document.querySelector('#TakeView').classList.remove('hidden');
 }
-function PickQuiz(){
-    let main = document.querySelector("#main");
-    main.innerHTML += '<div class="PickQuiz"><label id="fullCboQuiz">Quizzes:<select id="cboQuiz"><option>MathQuiz</option><option>CanadianaQuiz</option><option>WorldGeographyQuiz</option></select></label>';
-    main.innerHTML += '<button id="btnBeginQuiz">Begin Quiz</button></div>';
-    document.querySelector("#btnBeginQuiz").addEventListener("click", GetQuiz);
+function QuizClick(){
+    document.querySelector("#main").innerHTML = '';
+    let pickQuiz = document.querySelector("#PickQuiz");
+    let viewAtmpt = document.querySelector("#ViewAtmpt");
+
+    pickQuiz.classList.remove('hidden');
+    viewAtmpt.classList.add('hidden');
 }
-function ViewQuiz(){
-    let main = document.querySelector("#main");
-    main.innerHTML+='';
+function ViewClick(){
+    document.querySelector("#main").innerHTML = '';
+    let pickQuiz = document.querySelector("#PickQuiz");
+    let viewAtmpt = document.querySelector("#ViewAtmpt");
+
+    pickQuiz.classList.add('hidden');
+    viewAtmpt.classList.remove('hidden');
 }
 function GetQuiz(){
     let selQuiz = document.querySelector("#cboQuiz").value + ".json";
@@ -51,7 +61,7 @@ function BuildQuiz(){
     let main = document.querySelector("#main");
     let cards = buildCards();
     //sets up our initial html
-    main.innerHTML = '<div id="header"><h1> '+QUIZ.title+ '</h1>';
+    main.innerHTML += '<div id="header"><h1> '+QUIZ.title+ '</h1>';
     main.innerHTML += '<div class="tabs">' + cards + '</div>';
     main.innerHTML += '<button id="btnSubmit">Submit</button>';
     main.innerHTML += '<div id="results"></div>';
@@ -108,14 +118,14 @@ function showTab(){
 }
 //handles all the html which falls in the results div
 function Score(){
-    let userAnswer = [];
+    let userAnswers = [];
     let allQblock = document.querySelectorAll(".qBlock");
     console.log(allQblock);
     for(let i = 0; i < allQblock.length; i++){
         let allInput = allQblock[i].querySelectorAll("input");
         for(let i = 0; i < allInput.length; i++){
             if(allInput[i].checked){
-                userAnswer.push(Number([i]))
+                userAnswers.push(Number([i]))
             }
         }
     }
@@ -125,7 +135,6 @@ function Score(){
     console.log(questions[0]);
     let table = ""
     console.log(document.querySelectorAll('input:checked'));
-    GetUserAnswers();
     //makes sure you answer all questions
     if(document.querySelectorAll('input:checked').length < questions.length)
         alert("Please answer all questions!");
@@ -169,7 +178,7 @@ function Score(){
 
         let results = document.querySelector("#results");
         results.innerHTML = html;
-        AddQuizAtmpt(score, userAnswer);
+        AddQuizAtmpt(score, userAnswers);
     }
 }
 function AddQuizAtmpt(score, userAnswer){
@@ -185,27 +194,37 @@ function AddQuizAtmpt(score, userAnswer){
     quizAttempts.push(attempt);
     localStorage.setItem("quizAttempts", JSON.stringify(quizAttempts));
 }
-function ViewAttempts(){
-    let main = document.querySelector("#main");
+function BuildAttemptTable(){
+    console.log("test");
+    let table = document.querySelector("#AttemptTbl");
     let stored = localStorage.getItem("quizAttempts");
-
-    if(stored === null){
-        quizAttempts = [];
-    }
-    else{
+    if (stored === null) {
+        alert("No stored attempts!");
+        return;
+    } else {
         quizAttempts = JSON.parse(stored);
     }
-    let html = "";
-    html += "<h1>Quiz Attempts</h1>";
-    html += "<table>";
-    html += "<tr><th>User</th><th>Quiz</th><th>Timestamp</th></tr>";
+    let html = "<table><tr><th>User</th><th>Quiz</th><th>Timestamp</th></tr>";
     for(let i = 0; i < quizAttempts.length; i++){
-        html += "<tr>";
+        html += "<tr class='prevQuizRow'>";
         html += "<td>" + quizAttempts[i].userName + "</td>";
         html += "<td>" + quizAttempts[i].quiz.title + "</td>";
         html += "<td>" + quizAttempts[i].timestamp + "</td>";
         html += "</tr>";
     }
-    html += "</table>";
-    main.innerHTML += '<button id="btnView">View Attempts</button></div>'; 
+    html += '</table>';
+    table.innerHTML = html;
+    let allQuizRows = document.querySelectorAll('.prevQuizRow');
+    for(let i = 0; i < allQuizRows.length; i++){
+        allQuizRows[i].addEventListener("click", showAttempt)
+    }
+}
+function showAttempt(evt){
+    let prevSelRow = document.querySelector(".selected");
+    if(prevSelRow !== null)
+        prevSelRow.classList.remove("selected");
+    evt.target.parentElement.classList.add("selected");
+}
+function ShowDetails(){
+    
 }
