@@ -1,6 +1,11 @@
 //Ajax call to desired JSON that is sent into build site
 window.onload = function(){
-    this.document.querySelector("#btnLogin").addEventListener("click", BuildButtons);
+    this.document.querySelector("#btnLogin").addEventListener("click", Login);
+    document.querySelector("#btnTakeQuiz").addEventListener("click", QuizClick);
+    document.querySelector("#btnView").addEventListener("click", ViewClick);
+    document.querySelector("#btnBeginQuiz").addEventListener("click", GetQuiz);
+    this.document.querySelector("#btnLoadQuiz").addEventListener("click", BuildAttemptTable);
+    this.document.querySelector("#showDetails").addEventListener("click", ShowDetails);
 }
 //Global variables
 let QUIZ = [];
@@ -11,24 +16,32 @@ function JsonParse(text){
     console.log("Data Parsed");
     BuildQuiz();
 }
-function BuildButtons(){
+function Login(){
     user = document.querySelector("#login").value;
     if(user === ""){
         alert("Please enter a username");
         return;
     }
     document.querySelector("#user").innerHTML = user;
-    let takeView = document.querySelector("#TakeView");
-    takeView.innerHTML += '<button id="btnTakeQuiz">Take Quiz</button><button id="btnView">View Attempts</button>';
-    document.querySelector("#btnTakeQuiz").addEventListener("click", PickQuiz);
-    document.querySelector("#btnView").addEventListener("click", ViewAttempts);
     document.querySelector("#loginHtml").classList.add("hidden");
+
+    document.querySelector('#TakeView').classList.remove('hidden');
 }
-function PickQuiz(){
-    let main = document.querySelector("#main");
-    main.innerHTML = '<label id="fullCboQuiz">Quizzes:<select id="cboQuiz"><option>MathQuiz</option><option>CanadianaQuiz</option><option>WorldGeographyQuiz</option><option>DndQuiz</option><option>CoffeeQuiz</option></select></label>';
-    main.innerHTML += '<button id="btnBeginQuiz">Begin Quiz</button>';
-    document.querySelector("#btnBeginQuiz").addEventListener("click", GetQuiz);
+function QuizClick(){
+    document.querySelector("#main").innerHTML = '';
+    let pickQuiz = document.querySelector("#PickQuiz");
+    let viewAtmpt = document.querySelector("#ViewAtmpt");
+
+    pickQuiz.classList.remove('hidden');
+    viewAtmpt.classList.add('hidden');
+}
+function ViewClick(){
+    document.querySelector("#main").innerHTML = '';
+    let pickQuiz = document.querySelector("#PickQuiz");
+    let viewAtmpt = document.querySelector("#ViewAtmpt");
+
+    pickQuiz.classList.add('hidden');
+    viewAtmpt.classList.remove('hidden');
 }
 function GetQuiz(){
     let selQuiz = document.querySelector("#cboQuiz").value + ".json";
@@ -181,9 +194,9 @@ function AddQuizAtmpt(score, userAnswer){
     quizAttempts.push(attempt);
     localStorage.setItem("quizAttempts", JSON.stringify(quizAttempts));
 }
-function ViewAttempts(){
+function BuildAttemptTable(){
     console.log("test");
-    let main = document.querySelector("#main");
+    let table = document.querySelector("#AttemptTbl");
     let stored = localStorage.getItem("quizAttempts");
     if (stored === null) {
         alert("No stored attempts!");
@@ -191,11 +204,7 @@ function ViewAttempts(){
     } else {
         quizAttempts = JSON.parse(stored);
     }
-    console.log(quizAttempts);
-    let html = "";
-    html += "<h1>Quiz Attempts</h1>";
-    html += '<button id="btnLoadQuiz">Load Quiz Attempts</button><table>';
-    html += "<tr><th>User</th><th>Quiz</th><th>Timestamp</th></tr>";
+    let html = "<table><tr><th>User</th><th>Quiz</th><th>Timestamp</th></tr>";
     for(let i = 0; i < quizAttempts.length; i++){
         html += "<tr class='prevQuizRow'>";
         html += "<td>" + quizAttempts[i].userName + "</td>";
@@ -204,7 +213,7 @@ function ViewAttempts(){
         html += "</tr>";
     }
     html += '</table>';
-    main.innerHTML = html;
+    table.innerHTML = html;
     let allQuizRows = document.querySelectorAll('.prevQuizRow');
     for(let i = 0; i < allQuizRows.length; i++){
         allQuizRows[i].addEventListener("click", showAttempt)
@@ -215,4 +224,7 @@ function showAttempt(evt){
     if(prevSelRow !== null)
         prevSelRow.classList.remove("selected");
     evt.target.parentElement.classList.add("selected");
+}
+function ShowDetails(){
+    
 }

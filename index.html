@@ -20,14 +20,41 @@
         </label>
         <button id="btnLogin">Proceed</button>
     </div>
-    <div id="TakeView">
 
+    <div class="hidden" id="TakeView">
+        <button id="btnTakeQuiz">Take Quiz</button>
+        <button id="btnView">View Attempts</button>
     </div>
-    <div id="PickQuiz">
-        
+
+    <div class='hidden' id="PickQuiz">
+        <label id="fullCboQuiz">
+            Quizzes:
+            <select id="cboQuiz">
+                <option>MathQuiz</option>
+                <option>CanadianaQuiz</option>
+                <option>WorldGeographyQuiz</option>
+                <option>DndQuiz</option>
+                <option>CoffeeQuiz</option>
+            </select>
+        </label>
+        <button id="btnBeginQuiz">Begin Quiz</button>
     </div>
+
+    <div class="hidden" id="ViewAtmpt">
+        <button id="btnLoadQuiz">Load Quiz Attempts</button>
+        <h1>Quiz Attempts</h1>
+        <p>Click on a row and then the "Show Details" button</p>
+        <div id="AttemptTbl">
+            <table>
+                <tr><th>User</th><th>Quiz</th><th>Timestamp</th></tr>
+            </table>
+        </div>
+        <button id="showDetails">Show Details</button>
+    </div>
+
     <div id="main">
 
     </div>
+
 </body>
 </html>
