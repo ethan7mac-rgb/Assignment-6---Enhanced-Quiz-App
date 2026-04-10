@@ -129,55 +129,11 @@ function Score(){
             }
         }
     }
-
     let questions = QUIZ.questions;
-    let score = 0;
-    console.log(questions[0]);
-    let table = ""
-    console.log(document.querySelectorAll('input:checked'));
-    //makes sure you answer all questions
     if(document.querySelectorAll('input:checked').length < questions.length)
         alert("Please answer all questions!");
     else{
-        //loops through our questions
-        for(let i = 0; i < questions.length; i++){
-            let question = questions[i];
-            let answer = question.choices[question.answer];
-            let correct = 0;
-            //finds out the users answer
-            let userAnswer = document.querySelector('input[name="question' + (i+1) + '"]:checked');
-            let userAnswerText = "";
-            if(userAnswer === null)
-                userAnswerText = "No Answer";
-            else
-                userAnswerText = userAnswer.parentElement.textContent.trim();
-            console.log(userAnswerText);
-            //if that user answer is correct set our correct variable to 1, increments score and if not makes the <tr> with the highlight class
-            if(userAnswerText === answer){
-                score++
-                table+='<tr>';
-                correct = 1;
-            }
-            else
-                table+='<tr class="highlight">';
-
-            table+='<td>Question '+ [i+1] +'</td>';
-            table+='<td>'+ question.questionText +'</td>';
-            table+='<td>'+answer+'</td>';
-            table+='<td>'+userAnswerText+'</td>';
-            table+='<td>'+correct+'</td>';
-            table+='</tr>';
-        }
-        //creates the html to go in results
-        let html = "";
-        html += '<h2 id="Score">Your Score = '+ score + "/" + questions.length + '</h2>';
-        html += "<h2>Details</h2>";
-        html += '<table><tr><th>Question #</th><th>Question Text</th><th>Correct Answer</th><th>Your Answer</th><th>Score</th></tr>';
-        html += table;
-        html += '</table>'
-
-        let results = document.querySelector("#results");
-        results.innerHTML = html;
+        let score = BuildResultsTable(userAnswers, QUIZ)
         AddQuizAtmpt(score, userAnswers);
     }
 }
@@ -218,13 +174,57 @@ function BuildAttemptTable(){
     for(let i = 0; i < allQuizRows.length; i++){
         allQuizRows[i].addEventListener("click", showAttempt)
     }
+    document.querySelector("#main").innerHTML += '<div id="results"></div>';
 }
 function showAttempt(evt){
     let prevSelRow = document.querySelector(".selected");
     if(prevSelRow !== null)
         prevSelRow.classList.remove("selected");
-    evt.target.parentElement.classList.add("selected");
+    let selRow = evt.target.parentElement;
+    selRow.classList.add("selected");
 }
 function ShowDetails(){
+    let selRow = document.querySelector(".selected");
+    let rows = Array.from(document.querySelectorAll(".prevQuizRow"));
+    let i = rows.indexOf(selRow);
+    let attempt = quizAttempts[i]
     
+    BuildResultsTable(attempt.userAnswers, attempt.quiz);
+}
+function BuildResultsTable(userAnswer, quiz){
+    let questions = quiz.questions;
+    let score = 0;
+    let correct = 0;
+    let table = "";
+    for(let i = 0; i < questions.length; i++){
+            let answer = questions[i].answer;
+            let question = questions[i];
+            let userAnswerText = question.choices[userAnswer[i]];
+            //if that user answer is correct set our correct variable to 1, increments score and if not makes the <tr> with the highlight class
+            if(userAnswer[i] === answer){
+                score++
+                table+='<tr>';
+                correct = 1;
+            }
+            else
+                table+='<tr class="highlight">';
+
+            table+='<td>Question '+ [i+1] +'</td>';
+            table+='<td>'+ question.questionText +'</td>';
+            table+='<td>'+answer+'</td>';
+            table+='<td>'+userAnswerText+'</td>';
+            table+='<td>'+correct+'</td>';
+            table+='</tr>';
+            correct = 0;
+        }
+        //creates the html to go in results
+        let html = "";
+        html += '<h2 id="Score">Your Score = '+ score + "/" + questions.length + '</h2>';
+        html += "<h2>Details</h2>";
+        html += '<table><tr><th>Question #</th><th>Question Text</th><th>Correct Answer</th><th>Your Answer</th><th>Score</th></tr>';
+        html += table;
+        html += '</table>'
+        let results = document.querySelector("#results");
+        results.innerHTML = html;
+        return score;
 }
